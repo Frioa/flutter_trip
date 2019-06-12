@@ -19,10 +19,9 @@ class _TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: PageView(
-        controller: _controller,
+        controller: _controller, // 显示第几个页面
         children: <Widget>[
           HomePage(),
           SearchPage(),

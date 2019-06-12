@@ -29,19 +29,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         body: Stack(
       children: <Widget>[
-        MediaQuery.removePadding(
-          removeTop: true, // 去掉顶部屏幕适配
+        MediaQuery.removePadding( // 去掉顶部屏幕适配
+          removeTop: true,
           context: context,
           child: NotificationListener(
             onNotification: (scrollNotification) {
               if (scrollNotification is ScrollUpdateNotification &&
-                  scrollNotification.depth == 0) {
-                // 优化, 防止scrollNotification=0的时候也监听，只有在ScrollUpdateNotification更新的时候才监听并且只监听ListView的滚动
-                // 滚动且是列表滚动的时候
+                  scrollNotification.depth == 0) {// 优化, 防止scrollNotification=0的时候也监听，只有在ScrollUpdateNotification更新的时候才监听并且只监听ListView的滚动滚动且是列表滚动的时候
                 _onScroll(scrollNotification.metrics.pixels);
               }
             },
@@ -72,9 +69,9 @@ class _HomePageState extends State<HomePage> {
           opacity: appBarAlpha,
           child: Container(
             height: 80,
-            decoration: BoxDecoration(color: Colors.white),
+            decoration: BoxDecoration(color: Colors.white),// 长方形的盒子
             child: Center(
-              child: Padding(padding: EdgeInsets.only(top: 25),
+              child: Padding(padding: EdgeInsets.only(top: 25),// 顶部的padding
                   child: Text('首页'),
               ),
             ),
