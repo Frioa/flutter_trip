@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   var appBarAlpha = 0.0;
   _onScroll(offset) {
     var alpha = offset / APPBAR_SCROLL_OFFSET;
-    if(alpha < 0) {
+    if(alpha < 0) { // alpha 值的保护
       alpha = 0;
     }else if(alpha > 1) {
       alpha = 1;
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             onNotification: (scrollNotification) {
               if (scrollNotification is ScrollUpdateNotification &&
                   scrollNotification.depth == 0) {
-                // 优化, 并且只监听ListView的滚动
+                // 优化, 防止scrollNotification=0的时候也监听，只有在ScrollUpdateNotification更新的时候才监听并且只监听ListView的滚动
                 // 滚动且是列表滚动的时候
                 _onScroll(scrollNotification.metrics.pixels);
               }
@@ -68,13 +68,13 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        Opacity(
+        Opacity(// 透明度设置
           opacity: appBarAlpha,
           child: Container(
             height: 80,
             decoration: BoxDecoration(color: Colors.white),
             child: Center(
-              child: Padding(padding: EdgeInsets.only(top: 20),
+              child: Padding(padding: EdgeInsets.only(top: 25),
                   child: Text('首页'),
               ),
             ),
