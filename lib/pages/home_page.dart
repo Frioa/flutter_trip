@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_trip/dao/home_dao.dart';
+import 'dart:convert';
+
+import 'package:flutter_trip/model/home_model.dart';
+
 const APPBAR_SCROLL_OFFSET = 110;
 
 class HomePage extends StatefulWidget {
@@ -14,11 +19,20 @@ class _HomePageState extends State<HomePage> {
     'https://dimg04.c-ctrip.com/images/700c10000000pdili7D8B_780_235_57.jpg'
   ];
   var appBarAlpha = 0.0;
+  String resultString = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
   _onScroll(offset) {
     var alpha = offset / APPBAR_SCROLL_OFFSET;
-    if(alpha < 0) { // alpha 值的保护
+    if (alpha < 0) {
+      // alpha 值的保护
       alpha = 0;
-    }else if(alpha > 1) {
+    } else if (alpha > 1) {
       alpha = 1;
     }
     setState(() {
@@ -27,18 +41,45 @@ class _HomePageState extends State<HomePage> {
     print(appBarAlpha);
   }
 
+  loadData() async {
+    // 第一种方法
+/*    HomeDao.fetch().then((result){
+      setState(() {
+        resultString = json.encode(result);
+      });
+    }).catchError((e){
+      setState(() {
+        resultString = e.toString();
+      });
+    });*/
+//    第二种方法
+    try {
+      HomeModel mode = await HomeDao.fetch();
+      setState(() {
+        resultString = json.encode(mode);
+      });
+    }catch (e){
+      setState(() {
+          resultString = e.toString();
+      });
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: <Widget>[
-        MediaQuery.removePadding( // 去掉顶部屏幕适配
+        MediaQuery.removePadding(
+          // 去掉顶部屏幕适配
           removeTop: true,
           context: context,
           child: NotificationListener(
             onNotification: (scrollNotification) {
               if (scrollNotification is ScrollUpdateNotification &&
-                  scrollNotification.depth == 0) {// 优化, 防止scrollNotification=0的时候也监听，只有在ScrollUpdateNotification更新的时候才监听并且只监听ListView的滚动滚动且是列表滚动的时候
+                  scrollNotification.depth == 0) {
+                // 优化, 防止scrollNotification=0的时候也监听，只有在ScrollUpdateNotification更新的时候才监听并且只监听ListView的滚动滚动且是列表滚动的时候
                 _onScroll(scrollNotification.metrics.pixels);
               }
             },
@@ -58,21 +99,23 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   height: 800,
                   child: ListTile(
-                    title: Text("haha"),
+                    title: Text(resultString),
                   ),
                 )
               ],
             ),
           ),
         ),
-        Opacity(// 透明度设置
+        Opacity(
+          // 透明度设置
           opacity: appBarAlpha,
           child: Container(
             height: 80,
-            decoration: BoxDecoration(color: Colors.white),// 长方形的盒子
+            decoration: BoxDecoration(color: Colors.white), // 长方形的盒子
             child: Center(
-              child: Padding(padding: EdgeInsets.only(top: 25),// 顶部的padding
-                  child: Text('首页'),
+              child: Padding(
+                padding: EdgeInsets.only(top: 25), // 顶部的padding
+                child: Text('首页'),
               ),
             ),
           ),
