@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_trip/dao/home_dao.dart';
-import 'dart:convert';
+import 'package:flutter_trip/model/common_model.dart';
 
 import 'package:flutter_trip/model/home_model.dart';
-import 'package:flutter_trip/widget/grid_nav.dart';
+import 'package:flutter_trip/widget/local_nav.dart';
 
 const APPBAR_SCROLL_OFFSET = 110;
 
@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   ];
   var appBarAlpha = 0.0;
   String resultString = "";
+  List<CommonModel> localNavList = [] ;
 
   @override
   void initState() {
@@ -43,26 +44,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadData() async {
-    // 第一种方法
-/*    HomeDao.fetch().then((result){
-      setState(() {
-        resultString = json.encode(result);
-      });
-    }).catchError((e){
-      setState(() {
-        resultString = e.toString();
-      });
-    });*/
-//    第二种方法
     try {
       HomeModel mode = await HomeDao.fetch();
       setState(() {
-        resultString = json.encode(mode);
+        localNavList = mode.localNavList;
       });
     }catch (e){
-      setState(() {
-          resultString = e.toString();
-      });
+      print(e);
     }
 
   }
@@ -70,6 +58,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff2f2f2),
         body: Stack(
       children: <Widget>[
         MediaQuery.removePadding(
@@ -97,7 +86,11 @@ class _HomePageState extends State<HomePage> {
                     pagination: SwiperPagination(), // 指示器
                   ),
                 ),
-                GridNav(gridNavModel: null, name: 'name',),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(7, 4, 7, 4), // 四周的Padding
+                  child:  LocalNav(localNavList: localNavList,),
+                ),
+
                 Container(
                   height: 800,
                   child: ListTile(

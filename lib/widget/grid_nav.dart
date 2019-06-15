@@ -25,7 +25,7 @@ class _GridNavState extends State<GridNav> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return  Text('GridNav');
+    return  Text(widget.name);
   }
 
 }
