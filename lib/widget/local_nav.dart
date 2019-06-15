@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip/model/common_model.dart';
 import 'package:flutter_trip/model/grid_nav_model.dart';
+import 'package:flutter_trip/widget/webview.dart';
 
 class LocalNav extends StatelessWidget {// 1. 继承Widget
   final List<CommonModel> localNavList;// 必须是final 因为是继承 StatelessWidget, 父类使用了@immutable
@@ -39,7 +40,12 @@ class LocalNav extends StatelessWidget {// 1. 继承Widget
   Widget _item(BuildContext context, CommonModel model) {
     return GestureDetector( // 为组件添加点击事件
       onTap: (){
-
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) =>
+              WebView(url: model.url, statusBarColor: model.statusBarColor,
+              hideAppBar: model.hideAppBar,)
+          )
+        );
       },
       child: Column(
         children: <Widget>[
