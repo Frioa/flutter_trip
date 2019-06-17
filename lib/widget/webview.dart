@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-const CATCH_URLS = ['m.ctrip.com/', 'm.ctrip.com/html5/', 'm.ctrip.com/html5/'];
+const CATCH_URLS = ['m.ctrip.com/', 'm.ctrip.com/html5/', 'm.ctrip.com/html5'];
 class WebView extends StatefulWidget {
   final String url;
   final String statusBarColor;
@@ -31,6 +31,7 @@ class _WebViewState extends State<WebView> {
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   StreamSubscription<WebViewHttpError> _onHttpError;
   bool exiting = false;
+
   @override
   void initState() {
     super.initState();
@@ -66,17 +67,18 @@ class _WebViewState extends State<WebView> {
         contain = true;
         break;
       }
-      return contain;
     }
+    return contain;
   }
 
   @override
   void dispose() {// 注销工作
-    super.dispose();
+
     _onUrlChanged.cancel();
     _onStateChanged.cancel();
     _onHttpError.cancel();
-    webViewReference.dispose();
+    webViewReference.dispose();// 关掉webview需要在super方法之前
+    super.dispose(); //
   }
 
   @override
@@ -118,20 +120,27 @@ class _WebViewState extends State<WebView> {
     }
 
     return Container(
+      color: backButtonColor,
+      padding: EdgeInsets.fromLTRB(0, 40, 0, 10), // 优化：webview 顶部返回按钮位置靠上
       child: FractionallySizedBox(// Widget 撑满底部宽度
         widthFactor: 1,// 宽度撑满
         child: Stack(
           children: <Widget>[
             GestureDetector(
+              onTap: (){
+                Navigator.pop(context); // 返回上一层
+              },
               child: Container(
                 margin: EdgeInsets.only(left: 10),
+
                 child: Icon(
                   Icons.close,
-                  color: backButtonColor,
+                  color: backgroundColor,
                   size: 26,
                 ),
               ),
             ),
+
             Positioned(// 绝对定位
               left: 0,
               right: 0,
