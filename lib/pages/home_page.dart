@@ -7,6 +7,7 @@ import 'package:flutter_trip/model/grid_nav_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
 import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
+import 'package:flutter_trip/widget/sub_nav.dart';
 
 const APPBAR_SCROLL_OFFSET = 110;
 
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   var appBarAlpha = 0.0;
   String resultString = "";
   List<CommonModel> localNavList = [] ;
+  List<CommonModel> subNavList = [] ;
   GridNavModel gridNavModelt  ;
   @override
   void initState() {
@@ -50,6 +52,7 @@ class _HomePageState extends State<HomePage> {
       HomeModel mode = await HomeDao.fetch();
       setState(() {
         localNavList = mode.localNavList;
+        subNavList = mode.subNavList;
         gridNavModelt = mode.gridNav;
       });
     }catch (e){
@@ -94,10 +97,13 @@ class _HomePageState extends State<HomePage> {
                   child:  LocalNav(localNavList: localNavList,),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(7, 0, 7, 0), // 四周的Padding
+                  padding: EdgeInsets.fromLTRB(7, 0, 7, 4), // 四周的Padding
                   child:  GridNav(gridNavModel: gridNavModelt,),
                 ),
-
+                Padding(
+                  padding: EdgeInsets.fromLTRB(7, 0, 7, 4), // 四周的Padding
+                  child:  SubNav(subNavList: subNavList,),
+                ),
                 Container(
                   height: 800,
                   child: ListTile(
