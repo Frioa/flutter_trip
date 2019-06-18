@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
     print(appBarAlpha);
   }
 
+
   Future<Null> _handleRefresh() async {
     try {
       HomeModel mode = await HomeDao.fetch();
