@@ -10,11 +10,12 @@ import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
 import 'package:flutter_trip/widget/loding_container.dart';
 import 'package:flutter_trip/widget/sales_box_nav.dart';
+import 'package:flutter_trip/widget/search_bar.dart';
 import 'package:flutter_trip/widget/sub_nav.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
 const APPBAR_SCROLL_OFFSET = 110;
-
+const SEARCH_BAR_DEFAULT_TEXT = '网红打卡地 景点 酒店 美食';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -23,7 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   var appBarAlpha = 0.0;
-  String resultString = "";
+  String resultString = "resultString";
   List<CommonModel> localNavList = [] ;
   List<CommonModel> bannerList = [] ;
   List<CommonModel> subNavList = [] ;
@@ -121,7 +122,7 @@ class _HomePageState extends State<HomePage> {
           child:  SalesBox(salesBox: salesBoxModel,),
         ),
         Container(
-          height: 800,
+          height: 400,
           child: ListTile(
             title: Text(resultString),
           ),
@@ -130,20 +131,46 @@ class _HomePageState extends State<HomePage> {
     );
   }
   Widget get _appBar {
-    return Opacity(
-      // 透明度设置
-      opacity: appBarAlpha,
-      child: Container(
-        height: 80,
-        decoration: BoxDecoration(color: Colors.white), // 长方形的盒子
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(top: 25), // 顶部的padding
-            child: Text('首页'),
+    return Column(// 上面输入，下面阴影
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              // AppBar 渐变遮罩背景, 由透明到
+              colors: [Color(0x66000000), Colors.transparent],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )
+          ),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+            height: 80.0,
+            decoration: BoxDecoration(
+              color: Color.fromARGB((appBarAlpha * 255).toInt(), 255, 255, 255)
+            ),
+            child: SearchBar(
+              searchBarType: appBarAlpha > 0.2
+                  ? SearchBarType.homeLight
+                  : SearchBarType.home,
+              inputBoxClick: _jumpToSearch,
+              speakClick: _jumpToSpeak,
+              defaultText: SEARCH_BAR_DEFAULT_TEXT,
+              leftButtonClick: () {
+              },
+            ),
           ),
         ),
-      ),
+        Container(// 阴影设置
+          height: appBarAlpha > 0.2 ? 0.5 : 0,
+          decoration: BoxDecoration(
+            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 0.5)]
+          ),
+        )
+      ],
     );
+
+
+
   }
   Widget get _banner{
     return Container(
@@ -176,4 +203,10 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  void _jumpToSearch() {
+  }
+
+  void _jumpToSpeak() {
+  }
+
 }

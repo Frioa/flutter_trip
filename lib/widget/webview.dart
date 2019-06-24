@@ -5,12 +5,11 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 const CATCH_URLS = ['m.ctrip.com/', 'm.ctrip.com/html5/', 'm.ctrip.com/html5'];
 class WebView extends StatefulWidget {
-  final String url;
-  final String statusBarColor;
-  final String title;
-  final bool hideAppBar;
-  final bool backForbid;
-
+  final String url; // url
+  final String statusBarColor; // TabBar颜色
+  final String title;// 标题
+  final bool hideAppBar;// true 隐藏TabBar
+  final bool backForbid;// true 禁止返回
 
   const WebView(
       {Key key,
@@ -26,10 +25,10 @@ class WebView extends StatefulWidget {
 }
 
 class _WebViewState extends State<WebView> {
-  final webViewReference = new FlutterWebviewPlugin();
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
-  StreamSubscription<WebViewHttpError> _onHttpError;
+  final webViewReference = new FlutterWebviewPlugin();// WebView的引用
+  StreamSubscription<String> _onUrlChanged;// 监听URL变化
+  StreamSubscription<WebViewStateChanged> _onStateChanged; // 监听
+  StreamSubscription<WebViewHttpError> _onHttpError;//
   bool exiting = false;
 
   @override
@@ -37,11 +36,11 @@ class _WebViewState extends State<WebView> {
     super.initState();
     webViewReference.close(); // 防止重新打开
     // 当URL发生变化通过这个方法监听
-    _onUrlChanged = webViewReference.onUrlChanged.listen((String url) {
-    });
-    webViewReference.onStateChanged.listen((WebViewStateChanged state) {
+    _onUrlChanged = webViewReference.onUrlChanged.listen((String url) {});
+
+    _onStateChanged = webViewReference.onStateChanged.listen((WebViewStateChanged state) {
       switch(state.type) {
-        case WebViewState.startLoad:
+        case WebViewState.startLoad:// 开始加载的时候
           if(_isToMain(state.url) && !exiting) {// 主页URL
             if(widget.backForbid) { // 禁止返回
               webViewReference.launch(widget.url); // 从新打开当前页面
@@ -73,7 +72,6 @@ class _WebViewState extends State<WebView> {
 
   @override
   void dispose() {// 注销工作
-
     _onUrlChanged.cancel();
     _onStateChanged.cancel();
     _onHttpError.cancel();
@@ -93,7 +91,7 @@ class _WebViewState extends State<WebView> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          _appBar(Color(int.parse('0xff' + statusBarColorStr)), backButtonColor), // String 转 Int
+          _appBar(Color(int.parse('0xff' + statusBarColorStr)), backButtonColor), // AppBar String 转int
           
           Expanded(child: WebviewScaffold(url: widget.url,
           withZoom: true, // 支持缩放
@@ -132,7 +130,6 @@ class _WebViewState extends State<WebView> {
               },
               child: Container(
                 margin: EdgeInsets.only(left: 10),
-
                 child: Icon(
                   Icons.close,
                   color: backgroundColor,
@@ -140,7 +137,6 @@ class _WebViewState extends State<WebView> {
                 ),
               ),
             ),
-
             Positioned(// 绝对定位
               left: 0,
               right: 0,
@@ -155,5 +151,4 @@ class _WebViewState extends State<WebView> {
       ),
     );
   }
-
 }
