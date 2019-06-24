@@ -24,7 +24,7 @@ class _TabNavigatorState extends State<TabNavigator> {
         controller: _controller, // 显示第几个页面
         children: <Widget>[
           HomePage(),
-          SearchPage(),
+          SearchPage(hideLeft: true,),// 隐藏左部按钮
           TravelPage(),
           MyPage(),
         ],
