@@ -56,12 +56,15 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    //百度语音集成添加
     packagingOptions {
-        // 确保app与asr_plugin都依赖的libflutter.so merge时候不冲突
-        pickFirst 'lib/x86-64/libflutter.so'
+        // 确保app与asr_plugin都依赖的libflutter.so merge时不冲突@https://github.com/card-io/card.io-Android-SDK/issues/186#issuecomment-427552552
+        pickFirst 'lib/x86_64/libflutter.so'
         pickFirst 'lib/x86/libflutter.so'
         pickFirst 'lib/arm64-v8a/libflutter.so'
     }
+
+
 }
 
 flutter {

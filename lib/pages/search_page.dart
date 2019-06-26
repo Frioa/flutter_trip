@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip/dao/search_dao.dart';
 import 'package:flutter_trip/model/search_model.dart';
+import 'package:flutter_trip/pages/speak_page.dart';
 import 'package:flutter_trip/widget/search_bar.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
@@ -106,6 +107,7 @@ class _SearchPageState extends State<SearchPage> {
             hideLeft: widget.hideLeft,
             defaultText: widget.keyword,
             hint: widget.hint,
+            speakClick: _jumpToSpeak,
             leftButtonClick: () {
               Navigator.pop(context);
             },
@@ -114,6 +116,11 @@ class _SearchPageState extends State<SearchPage> {
         ),
       )
     ]);
+  }
+
+  void _jumpToSpeak() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SpeakPage()));
   }
 
   _item(int position) {
@@ -147,11 +154,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             Column(
               children: <Widget>[
-                Container(
-                  width: 300,
-                  child: _title(item)
-                ),
-                  
+                Container(width: 300, child: _title(item)),
                 Container(
                   width: 300,
                   margin: EdgeInsets.only(top: 5),
@@ -178,46 +181,46 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _title(SearchItem item) {
-    if(item == null) return null;
+    if (item == null) return null;
     List<TextSpan> spans = [];
     spans.addAll(_keywordTextSpans(item.word, searchModel.keyword));
     spans.add(TextSpan(
-        text: ' '+(item.districtname??'')+' '+(item.zonename ?? ''),
+      text: ' ' + (item.districtname ?? '') + ' ' + (item.zonename ?? ''),
       style: TextStyle(fontSize: 16, color: Colors.grey),
     ));
-    return RichText(text: TextSpan(children: spans),);
+    return RichText(
+      text: TextSpan(children: spans),
+    );
   }
 
   _subTitle(SearchItem item) {
     return RichText(
-      text: TextSpan(
-        children: <TextSpan>[
-          TextSpan(
-            text: item.price ?? '',
-            style: TextStyle(fontSize: 16, color: Colors.orange),
-          ),
-          TextSpan(
-            text: ' '+(item.star ?? ''),
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          )
-        ]
-      ),
+      text: TextSpan(children: <TextSpan>[
+        TextSpan(
+          text: item.price ?? '',
+          style: TextStyle(fontSize: 16, color: Colors.orange),
+        ),
+        TextSpan(
+          text: ' ' + (item.star ?? ''),
+          style: TextStyle(fontSize: 12, color: Colors.grey),
+        )
+      ]),
     );
   }
 
-   _keywordTextSpans(String word, String keyword) {
+  _keywordTextSpans(String word, String keyword) {
     List<TextSpan> spans = [];
-    if(word == null || word.length ==0) return spans;
+    if (word == null || word.length == 0) return spans;
     List<String> arr = word.split(keyword);
     TextStyle normalStyle = TextStyle(fontSize: 16, color: Colors.black87);
     TextStyle keywordStyle = TextStyle(fontSize: 16, color: Colors.orange);
 
-    for(int i=0; i < arr.length; i++) {
-      if((i+1)%2==0) {
+    for (int i = 0; i < arr.length; i++) {
+      if ((i + 1) % 2 == 0) {
         spans.add(TextSpan(text: keyword, style: keywordStyle));
       }
       String val = arr[i];
-      if(val != null && val.length>0) {
+      if (val != null && val.length > 0) {
         spans.add(TextSpan(text: val, style: normalStyle));
       }
     }
