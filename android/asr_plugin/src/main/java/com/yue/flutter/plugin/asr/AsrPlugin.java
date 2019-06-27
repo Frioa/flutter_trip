@@ -23,7 +23,7 @@ public class AsrPlugin implements MethodChannel.MethodCallHandler {
 
     public static void registerWith(PluginRegistry.Registrar registrar) {
         // 实例化MethodChannel 与 Dart关联
-        MethodChannel channel = new MethodChannel(registrar.messenger(), "asr_Plugin");
+        MethodChannel channel = new MethodChannel(registrar.messenger(), "asr_plugin");
         AsrPlugin instance = new AsrPlugin(registrar);
         // 处理Dart端消息
         channel.setMethodCallHandler(instance);
@@ -83,7 +83,7 @@ public class AsrPlugin implements MethodChannel.MethodCallHandler {
     private AsrManager getAsrManager() {
         // 注解返回值可以为空
         if (asrManager == null) {
-            if (activity != null && activity.isFinishing()) {
+            if (activity != null && !activity.isFinishing()) {
                 asrManager = new AsrManager(activity, onAsrListener);
             }
         }

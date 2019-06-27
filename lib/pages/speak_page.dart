@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_trip/pages/search_page.dart';
+import 'package:flutter_trip/plugin/asr_manager.dart';
 
 // 语音识别
 class SpeakPage extends StatefulWidget {
@@ -45,6 +47,7 @@ class _SpeakPageState extends State<SpeakPage>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               _topItem(),
+              _bottomItem(),
             ],
           ),
         ),
@@ -54,11 +57,32 @@ class _SpeakPageState extends State<SpeakPage>
 
   _speakStart() {
     controller.forward();
+    setState(() {
+      speakTips = '- 识别中 -';
+    });
+    AsrManager.start().then((text){
+      if(text != null && text.length>0) {
+        setState(() {
+          speakResult = text;
+        });
+        Navigator.pop(context);// 先关闭在跳转
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          SearchPage(keyword: speakResult,)
+        ));
+        print("语音识别结果：" + text);
+      }
+    }).catchError((e){
+      print("语音识别错误信息：" + e.toString());
+    });
   }
 
   _speakStop() {
+    setState(() {
+      speakTips = '长按说话';
+    });
     controller.reset();
     controller.stop();
+    AsrManager.stop();
   }
 
 
