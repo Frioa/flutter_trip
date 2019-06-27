@@ -10,11 +10,11 @@ const TRAVEL_URL =
 
 var Params = {
   "districtId": -1,
-  "groupChannelCode": "RX-OMF",
+  "groupChannelCode": "tourphoto_global1",
   "type": null,
-  "lat": -180,
-  "lon": -180,
-  "locatedDistrictId": 0,
+  "lat": 34.2317081,
+  "lon": 108.928918,
+  "locatedDistrictId": 7,
   "pagePara": {
     "pageIndex": 1,
     "pageSize": 10,
@@ -22,32 +22,40 @@ var Params = {
     "sortDirection": 0
   },
   "imageCutType": 1,
-  "head": {},
+  "head": {
+    "cid": "09031010211161114530",
+    "ctok": "",
+    "cver": "1.0",
+    "lang": "01",
+    "sid": "8888",
+    "syscode": "09",
+    "auth": null,
+    "extension": [
+      {"name": "protocal", "value": "https"}
+    ]
+  },
   "contentType": "json"
 };
 
 ///旅拍类别接口
 class TravelDao {
-  static Future<TravelModel> fetch(
+  static Future<TravelItemModel> fetch(
     String url,
-    Map params,
     String groupChannelCode,
-    int type,
     int pageIndex,
     int pageSize,
   ) async {
-    Map paramsMap = params['pagePara'];
+    Map paramsMap = Params['pagePara'];
     paramsMap['pageIndex'] = pageIndex;
     paramsMap['pageSize'] = pageSize;
-    params['groupChannelCode'] = groupChannelCode;
-    params['type'] = type;
-
-    var response = await http.post(url, body: jsonEncode(Params));
+    Params['groupChannelCode'] = groupChannelCode;
+    var body = jsonEncode(Params);
+    var response = await http.post(url, body: body);
 
     if (response.statusCode == 200) {
       Utf8Decoder utf8decoder  = Utf8Decoder(); // fix 中文乱码
       var result = json.decode(utf8decoder.convert(response.bodyBytes));
-      return TravelModel.fromJson(result);
+      return TravelItemModel.fromJson(result);
     } else {
       throw Exception('Failed to load travel_page.json');
     }

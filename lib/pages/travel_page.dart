@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip/dao/travel_tab_dao.dart';
 import 'package:flutter_trip/model/travel_tab_model.dart';
+import 'package:flutter_trip/pages/travel_tab_page.dart';
 
 class TravelPage extends StatefulWidget {
   @override
@@ -15,7 +16,8 @@ class _TravelPageState extends State<TravelPage>
 
   @override
   void initState() {
-    _controller = TabController(length: tabs.length, vsync: this);// 由于网上获取数据，从新初始化
+    _controller =
+        TabController(length: tabs.length, vsync: this); // 由于网上获取数据，从新初始化
     TravelTabDao.fetch().then((TravelTabModel model) {
       _controller =
           TabController(length: model.tabs.length, vsync: this); // 修复Tab空白的问题
@@ -62,13 +64,17 @@ class _TravelPageState extends State<TravelPage>
             }).toList(),
           ),
         ),
-        Flexible(// 解决TabBarView布局约束宽度与高度丢失的问题。
+        Flexible(
+          // 解决TabBarView布局约束宽度与高度丢失的问题。
           child: TabBarView(
-              controller: _controller,
-              children: tabs.map((TravelTab tab) {
-                return Text(tab.groupChannelCode);
-              }).toList(),
-        ),
+            controller: _controller,
+            children: tabs.map((TravelTab tab) {
+              return TravelTabPage(
+                travelUrl: travelTabModel.url,
+                groupChannelCode: tab.groupChannelCode,
+              );
+            }).toList(),
+          ),
         )
       ],
     ));
