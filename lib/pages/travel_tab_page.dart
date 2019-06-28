@@ -30,11 +30,12 @@ class _TravelTabPageState extends State<TravelTabPage>
   @override
   void initState() {
     _loadData();
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      // 监听滚动到底部
-      _loadData(loadMore: true);
-    }
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _loadData(loadMore: true);
+      }
+    });
     super.initState();
   }
 
@@ -77,6 +78,7 @@ class _TravelTabPageState extends State<TravelTabPage>
     TravelDao.fetch(widget.travelUrl ?? _TRAVEL_URL, widget.groupChannelCode,
             pageIndex, PAGE_SIZE)
         .then((TravelItemModel model) {
+      _loading = false;
       setState(() {
         List<TravelItem> items = _filterItems(model.resultList);
         if (travelItems != null) {
@@ -84,7 +86,7 @@ class _TravelTabPageState extends State<TravelTabPage>
         } else {
           travelItems = items;
         }
-        _loading = false;
+
       });
     }).catchError((e) {
       _loading = false;
