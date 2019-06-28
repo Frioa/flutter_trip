@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var appBarAlpha = 0.0;
-  String resultString = "resultString";
+  String resultString = "";
   List<CommonModel> localNavList = [];
 
   List<CommonModel> bannerList = [];

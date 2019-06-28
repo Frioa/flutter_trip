@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_trip/dao/travel_dao.dart';
 import 'package:flutter_trip/model/travel_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_trip/widget/cached_image.dart';
 import 'package:flutter_trip/widget/loding_container.dart';
 import 'package:flutter_trip/widget/webview.dart';
+
 
 const PAGE_SIZE = 11;
 const _TRAVEL_URL =
@@ -165,7 +167,10 @@ class _TravelItem extends StatelessWidget {
   _itemImage() {
     return Stack(
       children: <Widget>[
-        Image.network(item.article.images[0]?.dynamicUrl),
+        CachedImage(
+          imageUrl: item.article.images[0]?.dynamicUrl,
+          inSizedBox: true,
+        ),
         Positioned(
           bottom: 8,
           left: 8,
