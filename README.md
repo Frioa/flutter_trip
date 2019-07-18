@@ -1,6 +1,5 @@
 # flutter_trip
 
-感谢[Flutter从入门到进阶 实战携程网App](https://coding.imooc.com/class/321.html?mc_marking=a7b3119105f0cbb234506fc15f6bfbc4&mc_channel=syb8)这门课程让我入门了Flutter
 ## 目录
 - 效果展示
 - 首页实现
