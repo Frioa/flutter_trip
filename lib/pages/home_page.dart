@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _onScroll(offset) {
+  _onScroll(offset) {// 距离顶部的像素值
     var alpha = offset / APPBAR_SCROLL_OFFSET;
     if (alpha < 0) {
       // alpha 值的保护
@@ -85,17 +85,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xfff2f2f2),
-        body: LoadingContainer(
-            isLoading: _loading,
-            child: Stack(
+        body: LoadingContainer(// 加载页面
+            isLoading: _loading,// 控制加载页面
+            child: Stack(// ListView与AppBar 类似Stack结构摆放
               children: <Widget>[
-                MediaQuery.removePadding(
+                MediaQuery.removePadding(// 去掉系统栏的Padding
                   // 去掉顶部屏幕适配
                   removeTop: true,
                   context: context,
-                  child: RefreshIndicator(
+                  child: RefreshIndicator(// 下拉刷新
                       child: NotificationListener(
-                        onNotification: (scrollNotification) {
+                        onNotification: (scrollNotification) {// 监听下拉的状态
                           if (scrollNotification is ScrollUpdateNotification &&
                               scrollNotification.depth == 0) {
                             // 优化, 防止scrollNotification=0的时候也监听，只有在ScrollUpdateNotification更新的时候才监听并且只监听ListView的滚动滚动且是列表滚动的时候
@@ -108,13 +108,15 @@ class _HomePageState extends State<HomePage> {
                 ),
                 _appBar,
               ],
-            )));
+            )
+        )
+    );
   }
 
   Widget get _listView {
     return ListView(
       children: <Widget>[
-        _banner,
+        _banner, // banner
         Padding(
           padding: EdgeInsets.fromLTRB(7, 4, 7, 4), // 四周的Padding
           child: LocalNav(
@@ -155,7 +157,7 @@ class _HomePageState extends State<HomePage> {
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: LinearGradient(//线性渐变
             // AppBar 渐变遮罩背景, 由透明到
             colors: [Color(0x66000000), Colors.transparent],
             begin: Alignment.topCenter,
@@ -166,7 +168,8 @@ class _HomePageState extends State<HomePage> {
             height: 80.0,
             decoration: BoxDecoration(
                 color:
-                    Color.fromARGB((appBarAlpha * 255).toInt(), 255, 255, 255)),
+                    Color.fromARGB((appBarAlpha * 255).toInt(), 255, 255, 255)
+            ),
             child: SearchBar(
               searchBarType: appBarAlpha > 0.2
                   ? SearchBarType.homeLight
@@ -182,17 +185,19 @@ class _HomePageState extends State<HomePage> {
           // 阴影设置
           height: appBarAlpha > 0.2 ? 0.5 : 0,
           decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 0.5)]),
+              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 0.5)]
+          ),
         )
       ],
     );
   }
 
   Widget get _banner {
-    return Container(
+    return Container(// 设置固定高度
       height: 160,
-      child: Swiper(
+      child: Swiper(//
         itemCount: bannerList.length,
+
         autoplay: true,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
@@ -227,6 +232,7 @@ class _HomePageState extends State<HomePage> {
 
   void _jumpToSpeak() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SpeakPage()));
+        context, MaterialPageRoute(builder: (context) => SpeakPage()
+    ));
   }
 }

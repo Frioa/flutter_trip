@@ -7,7 +7,7 @@ import 'package:flutter_trip/widget/loding_container.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
 
-const PAGE_SIZE = 11;
+const PAGE_SIZE = 10;
 const _TRAVEL_URL =
     'https://m.ctrip.com/restapi/soa2/16189/json/searchTripShootListForHomePageV2?_fxpcqlniredt=09031010211161114530&__gw_appid=99999999&__gw_ver=1.0&__gw_from=10650013707&__gw_platform=H5';
 
@@ -27,7 +27,11 @@ class _TravelTabPageState extends State<TravelTabPage>
   List<TravelItem> travelItems;
   int pageIndex = 1;
   bool _loading = true;
-  ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();// 下载加载控制器
+
+
+  @override
+  bool get wantKeepAlive => true;// 为了让tab一直保存在内存中，不被销毁
 
   @override
   void initState() {
@@ -60,14 +64,19 @@ class _TravelTabPageState extends State<TravelTabPage>
                     child: StaggeredGridView.countBuilder(
                       controller: _scrollController,
                       // 配置下拉加载更多
-                      crossAxisCount: 4,
+                      crossAxisCount: 2, // 横轴子元素的数量。此属性值确定后子元素在横轴的长度就确定了,即ViewPort横轴长度/crossAxisCount。
                       itemCount: travelItems?.length ?? 0,
                       itemBuilder: (BuildContext context, int index) =>
                           _TravelItem(index: index, item: travelItems[index]),
+                      //  // 该属性可以控制当前 Cell 占用的空间大小, 用来实现瀑布的感觉
                       staggeredTileBuilder: (int index) =>
-                          new StaggeredTile.fit(2),
-                    )),
-                onRefresh: _handleRefresh)));
+                          new StaggeredTile.fit(1),
+                    )
+                ),
+                onRefresh: _handleRefresh
+            )
+        )
+    );
   }
 
   void _loadData({loadMore = false}) {
@@ -109,9 +118,6 @@ class _TravelTabPageState extends State<TravelTabPage>
     return filterItems;
   }
 
-  @override
-  bool get wantKeepAlive => true;
-
   Future<Null> _handleRefresh() async {
     _loadData();
     return null;
@@ -141,8 +147,8 @@ class _TravelItem extends StatelessWidget {
       child: Card(
         child: PhysicalModel(
           color: Colors.transparent,
-          clipBehavior: Clip.antiAlias, // 裁切行为：使用锯齿裁切
-          borderRadius: BorderRadius.circular(5),
+          clipBehavior: Clip.antiAliasWithSaveLayer, // 裁切行为：使用锯齿裁切
+          borderRadius: BorderRadius.circular(5),// 圆角
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, // 文字居左显示
             children: <Widget>[
@@ -152,7 +158,7 @@ class _TravelItem extends StatelessWidget {
                 child: Text(
                   item.article.articleTitle,
                   maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  overflow: TextOverflow.ellipsis,// 文字溢出
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ),

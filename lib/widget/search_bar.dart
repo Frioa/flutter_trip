@@ -7,11 +7,11 @@ enum SearchBarType { home, normal, homeLight } // searchBar 的类型
 
 class SearchBar extends StatefulWidget {
   final bool enabled; // 是否禁止搜索
-  final bool hideLeft; // true 隐藏
-  final SearchBarType searchBarType;
-  final String hint;
+  final bool hideLeft; // true 隐藏左边按钮
+  final SearchBarType searchBarType;// Tpye
+  final String hint;//
   final String defaultText;
-  final void Function() leftButtonClick;
+  final void Function() leftButtonClick;//
   final void Function() rightButtonClick;
   final void Function() speakClick; // 语音回调
   final void Function() inputBoxClick;
@@ -153,7 +153,8 @@ class _SearchBarState extends State<SearchBar> {
       decoration: BoxDecoration(
           color: inputBoxColor,
           borderRadius: BorderRadius.circular(
-              widget.searchBarType == SearchBarType.normal ? 5 : 15)),
+              widget.searchBarType == SearchBarType.normal ? 5 : 15)
+      ),
 
       child: Row(
         children: <Widget>[
@@ -192,7 +193,8 @@ class _SearchBarState extends State<SearchBar> {
                           style: TextStyle(fontSize: 13, color: Colors.grey),
                         ),
                       ),
-                      widget.inputBoxClick)),
+                      widget.inputBoxClick)
+          ),
           !showClear
               ? _wrapTap(
                   Icon(

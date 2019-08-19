@@ -39,17 +39,12 @@ var Params = {
 
 ///旅拍类别接口
 class TravelDao {
-  static Future<TravelItemModel> fetch(
-    String url,
-    String groupChannelCode,
-    int pageIndex,
-    int pageSize,
-  ) async {
+  static Future<TravelItemModel> fetch(String url, String groupChannelCode, int pageIndex, int pageSize,) async {
     Map paramsMap = Params['pagePara'];
     paramsMap['pageIndex'] = pageIndex;
     paramsMap['pageSize'] = pageSize;
     Params['groupChannelCode'] = groupChannelCode;
-    var body = jsonEncode(Params);
+    var body = jsonEncode(Params);//
     var response = await http.post(url, body: body);
 
     if (response.statusCode == 200) {

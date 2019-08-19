@@ -61,6 +61,7 @@ public class AsrPlugin implements MethodChannel.MethodCallHandler {
         }
         if (getAsrManager() != null) {
             getAsrManager().start(call.arguments instanceof Map ? (Map) call.arguments : null);
+
         } else {
             Log.e(TAG, "Ignored start, current getAsrManager is null.");
             result.error("Ignored start, current getAsrManager is null.", null, null);
@@ -183,7 +184,6 @@ public class AsrPlugin implements MethodChannel.MethodCallHandler {
             if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(activity, perm)) {
                 toApplyList.add(perm);
                 //进入到这里代表没有权限.
-
             }
         }
         String tmpList[] = new String[toApplyList.size()];

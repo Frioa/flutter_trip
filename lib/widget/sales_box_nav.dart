@@ -74,7 +74,9 @@ class SalesBox extends StatelessWidget {
                             builder: (context) => WebView(
                                   url: salesBox.moreUrl,
                                   title: '更多活动',
-                                )));
+                                )
+                        )
+                    );
                   },
                   child: Text(
                     '获取更多福利 >',
@@ -130,12 +132,12 @@ class SalesBox extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border(right: left? borderSide: BorderSide.none,
-          bottom: last? BorderSide.none:borderSide)
+          bottom: last? BorderSide.none : borderSide)
         ),
         child: Image.network(
           model.icon,
           fit: BoxFit.fill,
-          width: MediaQuery.of(context).size.width / 2 - 10, // 获得手机屏幕宽度 - padding
+            width: MediaQuery.of(context).size.width / 2 - 10, // 获得手机屏幕宽度 - padding
           height: big ? 129 : 80,
         ),
       )

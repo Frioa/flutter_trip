@@ -16,11 +16,9 @@ class _TravelPageState extends State<TravelPage>
 
   @override
   void initState() {
-    _controller =
-        TabController(length: tabs.length, vsync: this); // 由于网上获取数据，从新初始化
+    _controller = TabController(length: tabs.length, vsync: this); // 初始化空的controller，防止Null引用
     TravelTabDao.fetch().then((TravelTabModel model) {
-      _controller =
-          TabController(length: model.tabs.length, vsync: this); // 修复Tab空白的问题
+      _controller = TabController(length: model.tabs.length, vsync: this); // 获得数据再次初始化数据。
       setState(() {
         tabs = model.tabs;
         travelTabModel = model;
