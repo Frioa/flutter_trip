@@ -4,7 +4,7 @@ import 'navigator/tab_navigator.dart';
 
 void main() => runApp(MyApp());
 
-// text1
+// text
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
